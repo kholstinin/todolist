@@ -1,24 +1,51 @@
-import logo from './logo.svg';
 import './App.css';
 
+import { useState } from 'react';
+
+import { Input, Layout, List, Checkbox } from 'antd';
+const { Header, Content } = Layout;
+
+const { Search } = Input;
+
+const data = [
+  {
+    data: 'some todo'
+  },
+  {
+    data: 'some todo'
+  }
+]
+
 function App() {
+  const [items, setStateItem] = useState(data);
+  const setItem = (newItem) => setStateItem([...items, { data: newItem }]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <Layout>
+      <Header className="header">TODO</Header>
+      <Content className="content">
+        <div className="input__wrap">
+          <Search
+            placeholder="input search text"
+            allowClear
+            enterButton="Add"
+            size="large"
+            onSearch={setItem}
+          />
+        </div>
+        <List
+          itemLayout="vertical"
+          className="list"
+          dataSource={items}
+          renderItem={(item, index) => (
+            <List.Item>
+            <Checkbox>{item.data}</Checkbox>
+            </List.Item>
+          )}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+        </List>
+      </Content>
+    </Layout>
   );
 }
 
