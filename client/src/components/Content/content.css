@@ -1,7 +1,3 @@
-.header {
-  color: #fff;
-}
-
 .content {
   padding-top: 50px;
   background-color: #fff;
@@ -16,4 +12,12 @@
 .list {
   width: 300px;
   padding-top: 50px;
+}
+
+.list__item[class] {
+  display: flex;
+}
+
+.list__remove-icon {
+  cursor: pointer;
 }
