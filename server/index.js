@@ -13,10 +13,9 @@ await fastify.register(cors, {
 
 initRoutes(fastify);
 
-try {
-  await fastify.listen({ port: 4000 });
-
-} catch (err) {
-  fastify.log.error(err);
-  process.exit(1);
-};
+fastify.listen({ port: 4000, host: '0.0.0.0' }, (err, address) => {
+  if (err) {
+    fastify.log.error(err)
+    process.exit(1)
+  }
+})
