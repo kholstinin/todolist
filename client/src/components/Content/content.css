@@ -3,6 +3,8 @@
   background-color: #fff;
   padding-left: 50px;
   padding-right: 50px;
+  margin: 0 auto;
+  height: calc(100vh - 128px);
 }
 
 .input__wrap {

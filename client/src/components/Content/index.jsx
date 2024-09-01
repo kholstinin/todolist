@@ -21,8 +21,8 @@ export function Content() {
       });
   }, []);
 
-  const onAdd = (data) => {
-    const dataItem = { data, id: uuidv4() };
+  const onAdd = (text) => {
+    const dataItem = { text, id: uuidv4() };
 
     fetch(`${BASE_API_URL}/api/v1/add`, {
       method: 'post',
@@ -34,7 +34,6 @@ export function Content() {
   }
 
   const onDelete = (item) => {
-    console.log(item);
     fetch(`${BASE_API_URL}/api/v1/delete`, {
       method: 'post',
       body: JSON.stringify(item)
