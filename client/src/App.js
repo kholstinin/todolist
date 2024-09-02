@@ -18,4 +18,20 @@ function App() {
   );
 }
 
+function a() {
+  debugger;
+  b();
+  c();
+}
+
+function b() {
+  const a = 5;
+  const b = 6;
+  return a + b;
+}
+
+function c() {
+  return 5 - 5;
+}
+
 export default App;
