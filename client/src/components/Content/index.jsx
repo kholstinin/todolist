@@ -1,7 +1,7 @@
 import './content.css';
 
-import React, { useState, useEffect } from 'react';
-import { Input, List, Checkbox } from 'antd';
+import React, { useState, useEffect, useRef } from 'react';
+import { Input, List, Checkbox, Form } from 'antd';
 import { RestFilled } from '@ant-design/icons';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -10,8 +10,9 @@ import { BASE_API_URL } from '../../const';
 const { Search } = Input;
 
 export function Content() {
-  const [inputValue, setInputValue] = useState('');
   const [items, setItems] = useState([]);
+  const inputRef = useRef(null);
+  const [form] = Form.useForm();
 
   useEffect(() => {
     fetch(`${BASE_API_URL}/api/v1/todos`)
@@ -21,15 +22,30 @@ export function Content() {
       });
   }, []);
 
+  const onCheck = (item) => {
+    const { id } = item;
+
+    fetch(`${BASE_API_URL}/api/v1/check/${id}`, {
+      method: 'get'
+    }).then(() => {
+      const
+        newItems = [...items],
+        changedItem = newItems.filter((item) => item.id === id)[0];
+
+      changedItem.checked = !changedItem.checked;
+      setItems(newItems)
+    })
+  }
+
   const onAdd = (text) => {
-    const dataItem = { text, id: uuidv4() };
+    const dataItem = { data: text, checked: false, id: uuidv4() };
 
     fetch(`${BASE_API_URL}/api/v1/add`, {
       method: 'post',
       body: JSON.stringify(dataItem)
     }).then(() => {
       setItems([...items, dataItem]);
-      setInputValue('');
+      form.setFieldValue('todo', '');
     })
   }
 
@@ -46,15 +62,19 @@ export function Content() {
   return (
     <React.Fragment>
       <div className="input__wrap">
-        <Search
-          placeholder="Write some todo"
-          allowClear
-          enterButton="Add"
-          size="large"
-          onSearch={onAdd}
-          value={inputValue}
-          onChange={(e) => setInputValue(e.value)}
-        />
+        <Form
+          form={form}>
+          <Form.Item name="todo">
+            <Search
+              placeholder="Write some todo"
+              allowClear
+              enterButton="Add"
+              size="large"
+              onSearch={onAdd}
+              ref={inputRef}
+            />
+          </Form.Item>
+        </Form>
       </div>
       <List
         itemLayout="vertical"
@@ -62,7 +82,10 @@ export function Content() {
         dataSource={items}
         renderItem={(item) => (
           <List.Item className="list__item">
-            <Checkbox>{item.data}</Checkbox>
+            <Checkbox
+              checked={item.checked}
+              onClick={() => onCheck(item)}
+            >{item.data}</Checkbox>
             <RestFilled
               className="list__remove-icon"
               onClick={() => onDelete(item)}

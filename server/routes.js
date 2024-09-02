@@ -15,6 +15,16 @@ export function initRoutes(fastify) {
     await db.write();
   });
 
+  fastify.get('/api/v1/check/:id', async function handler(request) {
+    const
+      { id } = request.params,
+      todoItem = db.data.todos.filter((item) => item.id === id)[0];
+
+    todoItem.checked = !todoItem.checked;
+
+    await db.write();
+  });
+
   fastify.post('/api/v1/delete', async function handler(request) {
     const
       post = JSON.parse(request.body),

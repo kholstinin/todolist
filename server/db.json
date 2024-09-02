@@ -2,7 +2,8 @@
   "todos": [
     {
       "data": "buy apples",
-      "id": "db60e546-1a7d-4d9c-a1c4-b4aee2dc9e41"
+      "id": "db60e546-1a7d-4d9c-a1c4-b4aee2dc9e41",
+      "checked": false
     }
   ]
 }
