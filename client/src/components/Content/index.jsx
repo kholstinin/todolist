@@ -38,7 +38,11 @@ export function Content() {
   }
 
   const onAdd = (text) => {
-    const dataItem = { data: text, checked: false, id: uuidv4() };
+    if (text === '') {
+      return;
+    }
+
+    const dataItem = { data: text, checked: false, id: uuidv4(), nest: {a: 1} };
 
     fetch(`${BASE_API_URL}/api/v1/add`, {
       method: 'post',
